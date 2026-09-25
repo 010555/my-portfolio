@@ -1,0 +1,43 @@
+---
+import { siteConfig } from "../config";
+const hasServices = siteConfig.services && siteConfig.services.length > 0;
+---
+
+{
+  hasServices && (
+    <section id="services" class="p-8 sm:p-12 md:p-16 lg:p-24">
+      <div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          <div class="lg:col-span-4">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
+              Services
+            </h2>
+            <div
+              class="w-[75px] h-[5px] mt-2 rounded-full"
+              style={`background-color: ${siteConfig.accentColor}`}
+            />
+          </div>
+
+          <div class="lg:col-span-8 space-y-8">
+            <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600">
+              {siteConfig.aboutMe}
+            </p>
+
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {siteConfig.services.map((service) => (
+                <li class="bg-gray-50 rounded-xl border border-gray-200 p-5 sm:p-6 hover:bg-white hover:border-gray-300 hover:shadow-md transition-all duration-300">
+                  <h3 class="text-lg sm:text-xl font-semibold text-gray-900">
+                    {service.title}
+                  </h3>
+                  <p class="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed">
+                    {service.description}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

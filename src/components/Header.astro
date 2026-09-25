@@ -1,68 +1,146 @@
 ---
 import { siteConfig } from "../config";
 
-const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
-const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
-const hasEducation = siteConfig.education && siteConfig.education.length > 0;
+const navItems: { href: string; label: string }[] = [];
+if (siteConfig.services?.length) {
+  navItems.push({ href: "#services", label: "Services" });
+}
+if (siteConfig.caseStudies?.length) {
+  navItems.push({ href: "#work", label: "Selected Work" });
+}
+if (siteConfig.capabilities?.length) {
+  navItems.push({ href: "#capabilities", label: "Capabilities" });
+}
+if (siteConfig.social?.email) {
+  navItems.push({ href: "#contact", label: "Contact" });
+}
 ---
 
 <header
   id="header"
-  class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
 >
-  <nav class="max-w-7xl mx-auto px-8 py-4">
-    <ul class="flex items-center gap-8 justify-center">
-      <li>
-        <a
-          href="#about"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
+  <nav class="max-w-7xl mx-auto px-6 sm:px-8 py-4">
+    <!-- شريط الجوال: الاسم + زر القائمة -->
+    <div class="md:hidden flex items-center justify-between">
+      <a
+        href="#hero"
+        class="font-bold text-gray-800 truncate pr-4"
+        aria-label="Back to top"
+      >
+        {siteConfig.name}
+      </a>
+      <button
+        type="button"
+        id="menu-toggle"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Open navigation menu"
+        class="flex items-center justify-center w-11 h-11 -mr-2 text-gray-700 hover:text-black transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-6 w-6"
+          aria-hidden="true"
         >
-          About
-        </a>
-      </li>
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- روابط سطح المكتب -->
+    <ul class="hidden md:flex items-center gap-8 justify-center">
       {
-        hasProjects && (
+        navItems.map((item) => (
           <li>
             <a
-              href="#projects"
+              href={item.href}
               class="text-gray-700 hover:text-black transition-colors font-medium"
             >
-              Projects
+              {item.label}
             </a>
           </li>
-        )
-      }
-      {
-        hasExperience && (
-          <li>
-            <a
-              href="#experience"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Experience
-            </a>
-          </li>
-        )
-      }
-      {
-        hasEducation && (
-          <li>
-            <a
-              href="#education"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Education
-            </a>
-          </li>
-        )
+        ))
       }
     </ul>
   </nav>
+
+  <div
+    id="mobile-menu"
+    class="md:hidden hidden bg-white border-b border-gray-200"
+  >
+    <ul class="px-6 sm:px-8 py-2">
+      {
+        navItems.map((item) => (
+          <li class="border-b border-gray-100 last:border-b-0">
+            <a
+              href={item.href}
+              class="flex items-center min-h-[44px] py-3 text-gray-700 hover:text-black transition-colors font-medium"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </header>
 
 <script>
+  // قائمة الجوال: نفس كود Inline بلا أي مكتبة خارجية
+  const header = document.getElementById("header");
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+
+  const closeMenu = () => {
+    menu?.classList.add("hidden");
+    header?.classList.remove("bg-white");
+    toggle?.setAttribute("aria-expanded", "false");
+    toggle?.setAttribute("aria-label", "Open navigation menu");
+  };
+
+  const openMenu = () => {
+    menu?.classList.remove("hidden");
+    header?.classList.add("bg-white");
+    toggle?.setAttribute("aria-expanded", "true");
+    toggle?.setAttribute("aria-label", "Close navigation menu");
+  };
+
+  toggle?.addEventListener("click", () => {
+    toggle.getAttribute("aria-expanded") === "true"
+      ? closeMenu()
+      : openMenu();
+  });
+
+  // إغلاق بعد الانتقال إلى أي قسم
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  // الإغلاق بمفتاح Escape مع إعادة التركيز للزر
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && toggle?.getAttribute("aria-expanded") === "true") {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+
+  // الإغلاق عند العودة لعرض سطح المكتب
+  window.addEventListener("resize", () => {
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      closeMenu();
+    }
+  });
+
   window.addEventListener("scroll", () => {
-    const header = document.getElementById("header");
     if (window.scrollY > 100) {
       header?.classList.add("bg-white/80", "backdrop-blur-sm");
     } else {
