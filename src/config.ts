@@ -1,7 +1,7 @@
 // كل دراسة حالة تحتوي slug ثابت
 // يمكن إعادة استخدام نفس المكوّن لاحقاً في /work/[slug] عبر getStaticPaths دون تعديل العرض
 export const siteConfig = {
-  name: "Ahmed Abdo Mahmoud",
+  name: "Ahmed Abdu",
   title: "Web Developer",
   description:
     "Web developer building business web applications, dashboards, internal tools, and API-driven systems with Django, React, and modern web technologies.",

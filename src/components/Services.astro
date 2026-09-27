@@ -1,42 +1,67 @@
 ---
 import { siteConfig } from "../config";
 const hasServices = siteConfig.services && siteConfig.services.length > 0;
+
+// ترقيم الخدمات بصيغة رقمين لمحاذاة عمود الأرقام verticals في الشبكة
+const serviceNumber = (index: number) => String(index + 1).padStart(2, "0");
 ---
 
 {
   hasServices && (
-    <section id="services" class="p-8 sm:p-12 md:p-16 lg:p-24">
+    <section
+      id="services"
+      aria-labelledby="services-heading"
+      class="p-8 sm:p-12 md:p-16 lg:p-24"
+      style={`--svc-accent: ${siteConfig.accentColor}`}
+    >
       <div>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-          <div class="lg:col-span-4">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
-              Services
-            </h2>
-            <div
-              class="w-[75px] h-[5px] mt-2 rounded-full"
-              style={`background-color: ${siteConfig.accentColor}`}
-            />
-          </div>
+        {/* تسمية تمهيدية صغيرة بدل الشريط الزخرفي: تلوين مفرد بالaccent ونص متتبّع */}
+        <p class="text-xs sm:text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-[var(--svc-accent)]">
+          What I build
+        </p>
 
-          <div class="lg:col-span-8 space-y-8">
-            <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600">
-              {siteConfig.aboutMe}
-            </p>
+        <div class="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          <h2 class="lg:col-span-4 text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900 tracking-[-0.02em]"
+              id="services-heading">
+            Services
+          </h2>
 
-            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              {siteConfig.services.map((service) => (
-                <li class="bg-gray-50 rounded-xl border border-gray-200 p-5 sm:p-6 hover:bg-white hover:border-gray-300 hover:shadow-md transition-all duration-300">
-                  <h3 class="text-lg sm:text-xl font-semibold text-gray-900">
-                    {service.title}
-                  </h3>
-                  <p class="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed">
-                    {service.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <p class="lg:col-span-8 text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600 max-w-[58ch]">
+            {siteConfig.aboutMe}
+          </p>
         </div>
+
+        {/* قائمة تحريرية: خطوط فاصلة بدل الصناديق، مع تدرّج بصري عند التحويم */}
+        <ul class="mt-12 sm:mt-16 lg:mt-20 border-b border-gray-200">
+          {siteConfig.services.map((service, index) => (
+            <li class="group relative border-t border-gray-200 py-8 sm:py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-3">
+              {/* نقلة الحافة من اليسار — الحركة الوحيدة في القسم.
+                  motion-safe: يجعل قاعدة التحويم لا تُكتب أصلاً إلا في وضع
+                  no-preference، فيستحيل أن تتغلب motion-reduce عليها مهما تغيّر
+                  ترتيب القواعد في CSS. هذا نفس النمط المطبّق في Work وCapabilities. */}
+              <span
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[var(--svc-accent)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-x-100 motion-safe:group-focus-within:scale-x-100 motion-reduce:transition-none"
+              />
+
+              {/* الترقيم نص مرئي فعلياً: gray-500 يضمن 4.5:1 (gray-400 كان 2.6:1 ويخالف AA) */}
+              <p
+                aria-hidden="true"
+                class="text-sm tabular-nums text-gray-500 transition-colors duration-300 motion-safe:group-hover:text-[var(--svc-accent)] motion-reduce:transition-none lg:col-span-1"
+              >
+                {serviceNumber(index)}
+              </p>
+
+              <h3 id={`service-${index + 1}`} class="text-xl sm:text-2xl font-semibold leading-snug tracking-[-0.01em] text-gray-900 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1 motion-reduce:transition-none lg:col-span-4">
+                {service.title}
+              </h3>
+
+              <p class="text-base sm:text-[1.0625rem] leading-relaxed text-gray-600 max-w-[58ch] lg:col-span-7">
+                {service.description}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )

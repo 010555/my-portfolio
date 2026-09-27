@@ -7,24 +7,27 @@ const hasCaseStudies = siteConfig.caseStudies && siteConfig.caseStudies.length >
 
 {
   hasCaseStudies && (
-    <section id="work" class="p-8 sm:p-12 md:p-16 lg:p-24">
+    <section
+      id="work"
+      aria-labelledby="work-heading"
+      class="p-8 sm:p-12 md:p-16 lg:p-24"
+      style={`--work-accent: ${siteConfig.accentColor}`}
+    >
       <div>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-          <div class="lg:col-span-4">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
-              Selected Work
-            </h2>
-            <div
-              class="w-[75px] h-[5px] mt-2 rounded-full"
-              style={`background-color: ${siteConfig.accentColor}`}
-            />
-          </div>
+        {/* تسمية تمهيدية بنفس نظام Services ليبقى تسلسل القراءة متسقاً عبر الأقسام */}
+        <p class="text-xs sm:text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-[var(--work-accent)]">
+          Case studies
+        </p>
 
-          <div class="lg:col-span-8 space-y-8">
-            {siteConfig.caseStudies.map((study, index) => (
-              <CaseStudy study={study} index={index} />
-            ))}
-          </div>
+        {/* h2 يأخذ العرض الكامل: يمنع التفافه إلى سطرين ويمنح دراسة الحالة مساحة كافية */}
+        <h2 id="work-heading" class="mt-6 sm:mt-8 text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900 tracking-[-0.02em]">
+          Selected Work
+        </h2>
+
+        <div class="mt-12 sm:mt-16 space-y-20 sm:space-y-24 lg:space-y-32">
+          {siteConfig.caseStudies.map((study, index) => (
+            <CaseStudy study={study} index={index} />
+          ))}
         </div>
       </div>
     </section>

@@ -1,43 +1,110 @@
 ---
 import { siteConfig } from "../config";
 const hasCapabilities = siteConfig.capabilities && siteConfig.capabilities.length > 0;
+
+// ترقيم بفارغين لمحاذاة عمود الأرقام عمودياً في الشبكة
+const areaNumber = (index: number) => String(index + 1).padStart(2, "0");
+
+// خريطة عرض فقط: البيانات (items) تبقى من config كما هي، والتسميات والأوصاف
+// إعادة صياغة للمجموعات نفسها من زاوية "كيف أعمل" بدل "ما الأدوات".
+// config خارج نطاق التعديل، فالتسميات تعيش في المكوّن كما يعيش عنوان h2 هناك.
+const AREA: Record<string, { label: string; note: string }> = {
+  Backend: {
+    label: "Application Structure",
+    // مستمدة من aboutMe: "role-based access, clear workflows, and a REST API behind the interface"
+    note: "Role-based access, clear workflows, and a REST API behind the interface.",
+  },
+  Frontend: {
+    label: "Interface Development",
+    // مستمدة من services[1].description
+    note: "Role-based dashboards and internal tools that give teams one place to view and update operational data.",
+  },
+  Testing: {
+    label: "Verification",
+    // مستمدة من caseStudies[0].outcomes[2]
+    note: "Automated backend, frontend, and end-to-end test coverage.",
+  },
+};
 ---
 
 {
   hasCapabilities && (
-    <section id="capabilities" class="p-8 sm:p-12 md:p-16 lg:p-24">
+    <section
+      id="capabilities"
+      aria-labelledby="capabilities-heading"
+      class="p-8 sm:p-12 md:p-16 lg:p-24"
+      style={`--cap-accent: ${siteConfig.accentColor}`}
+    >
       <div>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-          <div class="lg:col-span-4">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
-              Capabilities
-            </h2>
-            <div
-              class="w-[75px] h-[5px] mt-2 rounded-full"
-              style={`background-color: ${siteConfig.accentColor}`}
-            />
-          </div>
+        {/* تسمية تمهيدية بنفس نظام Services وWork: لون accent واحد ونص متتبّع */}
+        <p class="text-xs sm:text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-[var(--cap-accent)]">
+          How I work
+        </p>
 
-          <div class="lg:col-span-8 space-y-8">
-            {siteConfig.capabilities.map((capability) => (
-              <div>
-                <h3
-                  id={`capability-group-${capability.group.toLowerCase()}`}
-                  class="text-lg sm:text-xl font-semibold text-gray-900"
+        <div class="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          <h2 id="capabilities-heading" class="lg:col-span-4 text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900 tracking-[-0.02em]">
+            Capabilities
+          </h2>
+
+          {/* الجملة التمهيدية تغيّر الإطار منجرد الأدوات إلى تسلسل العمل،
+              ولا تضيف ادعاءً جديداً: ترتيب المجموعات في config هو ترتيب العمل */}
+          <p class="lg:col-span-8 text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600 max-w-[58ch]">
+            These are ordered the way the work runs: structure first, then the
+            interface, then verification.
+          </p>
+        </div>
+
+        {/* صفوف تحريرية مرقّمة: خطوط فاصلة بدل الصناديق والشارات */}
+        <ul class="mt-12 sm:mt-16 lg:mt-20 border-b border-gray-200">
+          {siteConfig.capabilities.map((capability, index) => {
+            const area = AREA[capability.group];
+            return (
+              <li class="group relative border-t border-gray-200 py-8 sm:py-10 lg:py-12 grid grid-cols-1 xl:grid-cols-12 gap-x-6 gap-y-4">
+                {/* الشبكة تنقسم عند xl لا lg: عند 1024 كان gutter العرض 32px
+                    يستهلك 352px من 832px فتنهار الأعمدة إلى 40px وينهار نص areas.
+                    gap-x-6 يخفّض الفجوة، و col-span-7 يمنع التفاف عناصر الأدوات */}
+                {/* خط accent يظهر تدريجياً من اليسار — الحركة الوحيدة في القسم */}
+                <span
+                  aria-hidden="true"
+                  class="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[var(--cap-accent)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-x-100 motion-reduce:transition-none"
+                />
+
+                {/* الترقيم مرئي فعلياً: gray-500 يحقق 4.5:1 */}
+                <p
+                  aria-hidden="true"
+                  class="text-sm tabular-nums text-gray-500 transition-colors duration-300 motion-safe:group-hover:text-[var(--cap-accent)] motion-reduce:transition-none xl:col-span-1"
                 >
-                  {capability.group}
-                </h3>
-                <ul class="flex flex-wrap gap-2 sm:gap-3 mt-4">
+                  {areaNumber(index)}
+                </p>
+
+                <div class="xl:col-span-4">
+                  {/* نُبقي id المجموعة القديم كما هو حتى لا تنكسر الروابط العميقة */}
+                  <h3
+                    id={`capability-group-${capability.group.toLowerCase()}`}
+                    class="text-xl sm:text-2xl font-semibold leading-snug tracking-[-0.01em] text-gray-900 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1 motion-reduce:transition-none"
+                  >
+                    {area ? area.label : capability.group}
+                  </h3>
+
+                  {area && (
+                    <p class="mt-3 text-base sm:text-[1.0625rem] leading-relaxed text-gray-600 max-w-[46ch]">
+                      {area.note}
+                    </p>
+                  )}
+                </div>
+
+                {/* الأدوات نص عادي بفاصل رأسي رفيع لكل عنصر — بلا شارات ولا أيقونات */}
+                <ul class="xl:col-span-7 xl:pt-1.5 flex flex-wrap items-start gap-x-4 gap-y-2.5">
                   {capability.items.map((item) => (
-                    <li class="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 text-gray-800 rounded-full text-sm sm:text-base font-medium">
+                    <li class="border-l border-gray-200 pl-4 text-sm sm:text-base leading-relaxed text-gray-600">
                       {item}
                     </li>
                   ))}
                 </ul>
-              </div>
-            ))}
-          </div>
-        </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   )

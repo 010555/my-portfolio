@@ -8,158 +8,147 @@ interface Props {
 }
 
 const { study, index } = Astro.props;
+
+// ترقيم بفارغين ليحاذب عمود الأرقام بقية الأرقام عند تجاوز دراسة واحدة
+const projectNumber = (i: number) => String(i + 1).padStart(2, "0");
+
+// تسمية موحّدة لتسميات الأقسام الفرعية: صغيرة ومتتبّعة بدلاً من Caps بارزة
+const labelClass =
+  "text-[0.6875rem] sm:text-xs font-medium uppercase tracking-[0.16em] text-gray-500";
 ---
 
-<article
-  class="relative bg-gray-50 rounded-xl sm:rounded-2xl border border-gray-200 p-5 sm:p-6 md:p-8 transition-all duration-300 hover:bg-white hover:shadow-xl hover:border-gray-300"
->
-  {
-    study.link && (
-      <a
-        href={study.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Open ${study.title}`}
-        class="absolute top-5 right-5 sm:top-6 sm:right-6 md:top-8 md:right-8 w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-gray-900 rounded-full text-white transition-all duration-300 hover:bg-gray-700"
-      >
-        <svg
-          class="w-4 h-4 sm:w-5 sm:h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M7 17L17 7M17 7H7M17 7V17"
-          />
-        </svg>
-      </a>
-    )
-  }
+<article class="group relative">
+  {/* خط فاصل علوي يتحول إلى لون accent عند التحويم — إشارة إلى قسم قابل للقراءة.
+      نستخدم motion-safe: بدل motion-reduce: لأن قاعدة group-hover أعلى تخصيصاً
+      (0,2,0) من قاعدة motion-reduce (0,1,0)، فتفوز قاعدة التحويم وتبقى الحركة */}
+  <span
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[var(--work-accent)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-x-100 motion-reduce:transition-none"
+  />
 
-  <div class="space-y-6">
-    <div class={study.link ? "pr-12 sm:pr-14 md:pr-16" : ""}>
+  {/* ---------- الهوية: الترقيم والنوع والعنوان والملخص ---------- */}
+  <div class="pt-8 sm:pt-10">
+    <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
       {
         index !== undefined && (
-          <span
-            class="text-sm font-mono"
-            style={{ color: siteConfig.accentColor }}
-          >
-            0{index + 1}
+          <span class="text-sm tabular-nums text-gray-500">
+            {projectNumber(index)}
           </span>
         )
       }
-      <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
-        {study.title}
-      </h3>
       {
         study.type && (
-          <span class="inline-block mt-3 px-3 py-1 text-xs sm:text-sm font-medium rounded-full bg-white border border-gray-300 text-gray-700">
+          <span class="text-[0.6875rem] sm:text-xs font-medium uppercase tracking-[0.16em] text-gray-500">
             {study.type}
           </span>
         )
       }
     </div>
 
-    <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
+    {/* 24px على الجوال حتى لا ينكسر العنوان إلى ثلاثة أسطر في عمود 256px */}
+    <h3 class="mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-[-0.02em] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1 motion-reduce:transition-none">
+      {study.title}
+    </h3>
+
+    <p class="mt-6 text-lg sm:text-xl leading-relaxed text-gray-600 max-w-[54ch]">
       {study.summary}
     </p>
 
-    <div class="space-y-5">
-      <div>
-        <h4
-          class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-500"
+    {
+      study.link && (
+        <a
+          href={study.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${study.title}`}
+          class="group/link mt-6 inline-flex items-center gap-2 min-h-11 py-2 text-sm sm:text-base font-medium text-gray-900 transition-colors duration-300 motion-safe:hover:text-[var(--work-accent)] motion-reduce:transition-none"
         >
-          Purpose
-        </h4>
-        <p class="mt-1.5 text-sm sm:text-base text-gray-600 leading-relaxed">
+          <span class="underline decoration-gray-300 underline-offset-[6px] transition-colors duration-300 motion-safe:group-hover/link:decoration-[var(--work-accent)] motion-reduce:transition-none">
+            View project
+          </span>
+          <svg
+            class="w-4 h-4 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover/link:translate-x-1 motion-reduce:transition-none"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M7 17L17 7M17 7H7M17 7V17" />
+          </svg>
+        </a>
+      )
+    }
+  </div>
+
+  {/* ---------- السرد مقابل المواصفات ---------- */}
+  <div class="mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-12 lg:gap-y-16">
+    {/* السرد: لماذا بُني المشروع وكيف */}
+    <div class="lg:col-span-7 space-y-10">
+      <div>
+        <h4 class={labelClass}>Purpose</h4>
+        <p class="mt-3 max-w-[62ch] text-base sm:text-lg leading-relaxed text-gray-700">
           {study.purpose}
         </p>
       </div>
 
       <div>
-        <h4
-          class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-500"
-        >
-          Approach
-        </h4>
-        <p class="mt-1.5 text-sm sm:text-base text-gray-600 leading-relaxed">
+        <h4 class={labelClass}>Approach</h4>
+        <p class="mt-3 max-w-[62ch] text-base sm:text-lg leading-relaxed text-gray-700">
           {study.approach}
         </p>
       </div>
 
       <div>
-        <h4
-          class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-500"
-        >
-          Role
-        </h4>
-        <p class="mt-1.5 text-sm sm:text-base text-gray-600 leading-relaxed">
+        <h4 class={labelClass}>Role</h4>
+        <p class="mt-3 max-w-[62ch] text-base sm:text-lg leading-relaxed text-gray-700">
           {study.role}
         </p>
       </div>
     </div>
 
-    <div>
-      <h4
-        class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-500"
-      >
-        Capabilities
-      </h4>
-      <ul class="mt-3 space-y-2">
-        {
-          study.capabilities.map((capability) => (
-            <li class="flex items-start">
-              <span
-                class="inline-block w-1.5 h-1.5 rounded-full mt-2 mr-3 flex-shrink-0"
-                style={{ backgroundColor: siteConfig.accentColor }}
-                aria-hidden="true"
-              />
-              <span class="text-sm sm:text-base text-gray-600">
+    {/* المواصفات: ما بُني فعلياً وبأي تقنيات */}
+    <div class="lg:col-span-5 lg:border-l lg:border-gray-200 lg:pl-8">
+      <div>
+        <h4 class={labelClass}>Capabilities</h4>
+        {/* قائمة القدرات عمود واحد: عمودان كانا يلويان كل عنصر إلى سطرين وثلاثة */}
+        <ul class="mt-4 space-y-2.5">
+          {
+            study.capabilities.map((capability) => (
+              <li class="text-sm sm:text-[0.9375rem] leading-relaxed text-gray-600">
                 {capability}
-              </span>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
 
-    <div>
-      <h4
-        class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-500"
-      >
-        Stack
-      </h4>
-      <ul class="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
-        {
-          study.stack.map((item) => (
-            <li class="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-gray-900 text-white rounded-md sm:rounded-lg text-xs sm:text-sm font-medium">
-              {item}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+      <div class="mt-10">
+        <h4 class={labelClass}>Stack</h4>
+        {/* تقنيات كنص عادي لا كشارات داكنة: عمودان كانا يكسران "Django REST Framework" إلى سطرين */}
+        <ul class="mt-4 space-y-1.5">
+          {
+            study.stack.map((item) => (
+              <li class="text-sm sm:text-[0.9375rem] text-gray-600">{item}</li>
+            ))
+          }
+        </ul>
+      </div>
 
-    <div>
-      <h4
-        class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-500"
-      >
-        Outcomes
-      </h4>
-      <ul class="mt-3 space-y-2">
-        {
-          study.outcomes.map((outcome) => (
-            <li class="flex items-start">
-              <span class="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 mr-3 flex-shrink-0" />
-              <span class="text-sm sm:text-base text-gray-600">{outcome}</span>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="mt-10">
+        <h4 class={labelClass}>Outcomes</h4>
+        <ul class="mt-4 space-y-3">
+          {
+            study.outcomes.map((outcome) => (
+              <li class="text-sm sm:text-[0.9375rem] leading-relaxed text-gray-600">
+                {outcome}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </div>
 </article>

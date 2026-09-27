@@ -19,13 +19,14 @@ if (siteConfig.social?.email) {
 <header
   id="header"
   class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  style={`--nav-accent: ${siteConfig.accentColor}`}
 >
   <nav class="max-w-7xl mx-auto px-6 sm:px-8 py-4">
     <!-- شريط الجوال: الاسم + زر القائمة -->
     <div class="md:hidden flex items-center justify-between">
       <a
         href="#hero"
-        class="font-bold text-gray-800 truncate pr-4"
+        class="font-bold text-gray-800 truncate pr-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--nav-accent)]"
         aria-label="Back to top"
       >
         {siteConfig.name}
@@ -36,7 +37,7 @@ if (siteConfig.social?.email) {
         aria-controls="mobile-menu"
         aria-expanded="false"
         aria-label="Open navigation menu"
-        class="flex items-center justify-center w-11 h-11 -mr-2 text-gray-700 hover:text-black transition-colors"
+        class="flex items-center justify-center w-11 h-11 -mr-2 text-gray-700 hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--nav-accent)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +64,7 @@ if (siteConfig.social?.email) {
           <li>
             <a
               href={item.href}
-              class="text-gray-700 hover:text-black transition-colors font-medium"
+              class="text-gray-700 hover:text-black transition-colors font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--nav-accent)]"
             >
               {item.label}
             </a>
@@ -83,7 +84,7 @@ if (siteConfig.social?.email) {
           <li class="border-b border-gray-100 last:border-b-0">
             <a
               href={item.href}
-              class="flex items-center min-h-[44px] py-3 text-gray-700 hover:text-black transition-colors font-medium"
+              class="flex items-center min-h-[44px] py-3 text-gray-700 hover:text-black transition-colors font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--nav-accent)]"
             >
               {item.label}
             </a>
@@ -152,5 +153,13 @@ if (siteConfig.social?.email) {
 <style>
   html {
     scroll-behavior: smooth;
+  }
+
+  /* الهيدر fixed وارتفاعه 76px تحت md، فنمنح التمرير الداخلي هامشاً يبدأ بعده
+     وإلا اختفى عنوان القسم (kicker) خلف الشريط. على سطح المكتب لا يوجد تداخل. */
+  @media (max-width: 767px) {
+    html {
+      scroll-padding-top: 5rem;
+    }
   }
 </style>
