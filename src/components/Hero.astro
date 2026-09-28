@@ -11,12 +11,11 @@ const email = siteConfig.social?.email;
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      class="bg-white px-8 sm:px-12 md:px-16 lg:px-24 pt-28 sm:pt-32 lg:pt-40 pb-16 sm:pb-20 lg:pb-24"
-      style={`--hero-accent: ${siteConfig.accentColor}`}
+      class="hero-shell"
     >
-      <div>
+      <div class="layout-container">
         {/* تسمية تمهيدية هادئة بنفس نظام الأقسام التي تحته */}
-        <p class="text-xs sm:text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-[var(--hero-accent)] hero-enter">
+        <p class="section-eyebrow hero-enter">
           {siteConfig.title}
         </p>
 
@@ -24,29 +23,29 @@ const email = siteConfig.social?.email;
             والحجم محسوب على أن يبقى سطراً واحداً حتى 320px */}
         <h1
           id="hero-heading"
-          class="mt-6 sm:mt-8 text-[2.25rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] 2xl:text-[7.5rem] font-bold leading-[1.05] tracking-[-0.02em] text-gray-900 hero-enter hero-enter-1"
+          class="display-title hero-name hero-enter hero-enter-1"
         >
           {siteConfig.name}
         </h1>
 
         {/* خط شعري كامل العرض يثبّت الإيقاع أفقياً ويمنع около النص فراغاً غير مقصود */}
-        <div class="mt-10 sm:mt-14 lg:mt-20 border-t border-gray-200 pt-8 sm:pt-10 lg:pt-12">
+        <div class="hero-divider border-t border-line">
           {/* الجملة من aboutMe: تجيب عن "ماذا يبني" و"كيف يعمل" في صيغة المتكلم،
               وهي نفس جملة Services التالية — انظر الملاحظة في التقرير */}
-          <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600 max-w-[60ch] hero-enter hero-enter-2">
+          <p class="lead-copy hero-enter hero-enter-2">
             {siteConfig.aboutMe}
           </p>
 
-          <div class="mt-8 sm:mt-10 flex flex-wrap items-center gap-x-5 sm:gap-x-6 gap-y-2 hero-enter hero-enter-3">
+          <div class="hero-actions hero-enter hero-enter-3">
             {hasWork && (
               <a
                 href="#work"
-                class="group inline-flex items-center gap-2 min-h-[44px] text-base sm:text-lg font-medium text-gray-900 transition-colors duration-300 motion-safe:hover:text-[var(--hero-accent)] motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--hero-accent)]"
+                class="group action-link action-link-primary gap-2 text-base sm:text-lg font-medium"
               >
                 View selected work
                 <span
                   aria-hidden="true"
-                  class="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1 motion-reduce:transition-none"
+                  class="transition-transform duration-standard ease-standard motion-safe:group-hover:translate-x-1"
                 >
                   →
                 </span>
@@ -58,12 +57,12 @@ const email = siteConfig.social?.email;
                 {/* فاصل شعري بين الإجراءين — لا يحمل معلومات، مخفي على الشاشات الصغيرة */}
                 <span
                   aria-hidden="true"
-                  class="hidden sm:block h-5 w-px bg-gray-200"
+                  class="hidden sm:block h-5 w-px bg-line"
                 />
 
                 <a
                   href={`mailto:${email}`}
-                  class="inline-flex items-center min-h-[44px] text-base sm:text-lg text-gray-600 transition-colors duration-300 motion-safe:hover:text-[var(--hero-accent)] motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--hero-accent)]"
+                  class="action-link text-base sm:text-lg text-body"
                 >
                   Email
                 </a>
@@ -77,14 +76,12 @@ const email = siteConfig.social?.email;
 }
 
 <style>
-  /* حركة دخول واحدة هادئة. حالة "مخفي" الابتدائية مكتوبة داخل استعلام
-     no-preference فقط، لذلك في وضع reduce يظهر المحتوى كاملاً بلا حركة
-     ولا يبقى معتماً — وهو عكس خطأ opacity:0 في الخارج. */
+  /* The content remains visible when animation is unavailable or reduced. */
   @media (prefers-reduced-motion: no-preference) {
     @keyframes heroEnter {
       from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(8px);
       }
       to {
         opacity: 1;
@@ -93,7 +90,7 @@ const email = siteConfig.social?.email;
     }
 
     .hero-enter {
-      animation: heroEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation: heroEnter var(--motion-enter) var(--ease-standard) both;
     }
 
     .hero-enter-1 {

@@ -13,17 +13,16 @@ const { study, index } = Astro.props;
 const projectNumber = (i: number) => String(i + 1).padStart(2, "0");
 
 // تسمية موحّدة لتسميات الأقسام الفرعية: صغيرة ومتتبّعة بدلاً من Caps بارزة
-const labelClass =
-  "text-[0.6875rem] sm:text-xs font-medium uppercase tracking-[0.16em] text-gray-500";
+const labelClass = "meta-label";
 ---
 
-<article class="group relative">
+<article class="group relative case-study-card">
   {/* خط فاصل علوي يتحول إلى لون accent عند التحويم — إشارة إلى قسم قابل للقراءة.
       نستخدم motion-safe: بدل motion-reduce: لأن قاعدة group-hover أعلى تخصيصاً
       (0,2,0) من قاعدة motion-reduce (0,1,0)، فتفوز قاعدة التحويم وتبقى الحركة */}
   <span
     aria-hidden="true"
-    class="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[var(--work-accent)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-x-100 motion-reduce:transition-none"
+    class="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-standard ease-standard motion-safe:group-hover:scale-x-100"
   />
 
   {/* ---------- الهوية: الترقيم والنوع والعنوان والملخص ---------- */}
@@ -31,14 +30,14 @@ const labelClass =
     <div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
       {
         index !== undefined && (
-          <span class="text-sm tabular-nums text-gray-500">
+          <span class="text-sm tabular-nums text-muted">
             {projectNumber(index)}
           </span>
         )
       }
       {
         study.type && (
-          <span class="text-[0.6875rem] sm:text-xs font-medium uppercase tracking-[0.16em] text-gray-500">
+          <span class="meta-label">
             {study.type}
           </span>
         )
@@ -46,11 +45,11 @@ const labelClass =
     </div>
 
     {/* 24px على الجوال حتى لا ينكسر العنوان إلى ثلاثة أسطر في عمود 256px */}
-    <h3 class="mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-[-0.02em] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1 motion-reduce:transition-none">
+    <h3 class="project-title">
       {study.title}
     </h3>
 
-    <p class="mt-6 text-lg sm:text-xl leading-relaxed text-gray-600 max-w-[54ch]">
+    <p class="lead-copy project-summary">
       {study.summary}
     </p>
 
@@ -61,13 +60,13 @@ const labelClass =
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open ${study.title}`}
-          class="group/link mt-6 inline-flex items-center gap-2 min-h-11 py-2 text-sm sm:text-base font-medium text-gray-900 transition-colors duration-300 motion-safe:hover:text-[var(--work-accent)] motion-reduce:transition-none"
+          class="group/link project-link mt-4"
         >
-          <span class="underline decoration-gray-300 underline-offset-[6px] transition-colors duration-300 motion-safe:group-hover/link:decoration-[var(--work-accent)] motion-reduce:transition-none">
+          <span class="underline decoration-gray-300 underline-offset-[6px] transition-colors duration-fast motion-safe:group-hover/link:decoration-accent">
             View project
           </span>
           <svg
-            class="w-4 h-4 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover/link:translate-x-1 motion-reduce:transition-none"
+            class="w-4 h-4 transition-transform duration-standard ease-standard motion-safe:group-hover/link:translate-x-1"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
@@ -84,40 +83,40 @@ const labelClass =
   </div>
 
   {/* ---------- السرد مقابل المواصفات ---------- */}
-  <div class="mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-12 lg:gap-y-16">
+  <div class="case-study-grid">
     {/* السرد: لماذا بُني المشروع وكيف */}
-    <div class="lg:col-span-7 space-y-10">
+    <div class="space-y-10">
       <div>
         <h4 class={labelClass}>Purpose</h4>
-        <p class="mt-3 max-w-[62ch] text-base sm:text-lg leading-relaxed text-gray-700">
+        <p class="body-copy mt-3">
           {study.purpose}
         </p>
       </div>
 
       <div>
         <h4 class={labelClass}>Approach</h4>
-        <p class="mt-3 max-w-[62ch] text-base sm:text-lg leading-relaxed text-gray-700">
+        <p class="body-copy mt-3">
           {study.approach}
         </p>
       </div>
 
       <div>
         <h4 class={labelClass}>Role</h4>
-        <p class="mt-3 max-w-[62ch] text-base sm:text-lg leading-relaxed text-gray-700">
+        <p class="body-copy mt-3">
           {study.role}
         </p>
       </div>
     </div>
 
     {/* المواصفات: ما بُني فعلياً وبأي تقنيات */}
-    <div class="lg:col-span-5 lg:border-l lg:border-gray-200 lg:pl-8">
+    <div class="case-study-facts">
       <div>
         <h4 class={labelClass}>Capabilities</h4>
         {/* قائمة القدرات عمود واحد: عمودان كانا يلويان كل عنصر إلى سطرين وثلاثة */}
         <ul class="mt-4 space-y-2.5">
           {
             study.capabilities.map((capability) => (
-              <li class="text-sm sm:text-[0.9375rem] leading-relaxed text-gray-600">
+              <li class="supporting-copy">
                 {capability}
               </li>
             ))
@@ -131,7 +130,7 @@ const labelClass =
         <ul class="mt-4 space-y-1.5">
           {
             study.stack.map((item) => (
-              <li class="text-sm sm:text-[0.9375rem] text-gray-600">{item}</li>
+              <li class="supporting-copy">{item}</li>
             ))
           }
         </ul>
@@ -142,7 +141,7 @@ const labelClass =
         <ul class="mt-4 space-y-3">
           {
             study.outcomes.map((outcome) => (
-              <li class="text-sm sm:text-[0.9375rem] leading-relaxed text-gray-600">
+              <li class="supporting-copy">
                 {outcome}
               </li>
             ))

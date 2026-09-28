@@ -2,8 +2,8 @@
 import { siteConfig } from "../config";
 ---
 
-<footer class="relative bg-gray-50 border-t border-gray-200">
-  <div class="mx-auto max-w-6xl px-6 py-12 lg:px-8">
+<footer class="relative site-footer border-t">
+  <div class="layout-container py-12">
     <div
       class="flex flex-col md:flex-row md:items-center md:justify-between gap-8"
     >
@@ -11,10 +11,10 @@ import { siteConfig } from "../config";
         {/* الاسم هنا علامة تجارية داخل <footer> وليس عنواناً فرعياً، فكان يظهر
             h3 في مخطط العناوين بلا parent. نحوّله إلى <p> بنفس الأصناف تماماً
             حتى لا يتغير أي شكل بصري، ويختفي العنوان الزائف من التتابع. */}
-        <p class="text-2xl font-bold text-gray-800">
+        <p class="text-2xl font-bold text-ink">
           {siteConfig.name}
         </p>
-        <p class="text-base text-gray-600">
+        <p class="text-base text-body">
           {siteConfig.title}
         </p>
         <div class="flex gap-x-6">
@@ -23,8 +23,7 @@ import { siteConfig } from "../config";
               <a
                 href={`mailto:${siteConfig.social.email}`}
                 aria-label="Email"
-                class="text-gray-600 transition-colors duration-300 hover:text-[var(--accent-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-color)]"
-                style={`--accent-color: ${siteConfig.accentColor}`}
+                class="social-icon-link text-body transition-colors duration-fast hover:text-accent"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -53,8 +52,7 @@ import { siteConfig } from "../config";
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                class="text-gray-600 transition-colors duration-300 hover:text-[var(--accent-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-color)]"
-                style={`--accent-color: ${siteConfig.accentColor}`}
+                class="social-icon-link text-body transition-colors duration-fast hover:text-accent"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -86,8 +84,7 @@ import { siteConfig } from "../config";
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                class="text-gray-600 transition-colors duration-300 hover:text-[var(--accent-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-color)]"
-                style={`--accent-color: ${siteConfig.accentColor}`}
+                class="social-icon-link text-body transition-colors duration-fast hover:text-accent"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -111,8 +108,8 @@ import { siteConfig } from "../config";
         </div>
       </div>
 
-      <div class="hidden md:block">
-        <p class="text-sm text-gray-500">
+      <div class="footer-legal">
+        <p class="text-sm text-muted">
           © {new Date().getFullYear()}
           {siteConfig.name}. All rights reserved.
         </p>
@@ -120,28 +117,4 @@ import { siteConfig } from "../config";
     </div>
   </div>
 
-  <!-- Decorative pattern -->
-  <div class="absolute inset-0 -z-10 overflow-hidden">
-    <svg
-      aria-hidden="true"
-      class="absolute bottom-0 left-0 w-full h-24 text-gray-100"
-    >
-      <pattern
-        id="footer-pattern"
-        x="0"
-        y="0"
-        width="100"
-        height="100"
-        patternUnits="userSpaceOnUse"
-      >
-        <path
-          d="M0 50 Q 25 40, 50 50 T 100 50"
-          stroke="currentColor"
-          stroke-width="0.5"
-          fill="none"
-          opacity="0.4"></path>
-      </pattern>
-      <rect width="100%" height="100%" fill="url(#footer-pattern)"></rect>
-    </svg>
-  </div>
 </footer>

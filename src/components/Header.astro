@@ -18,15 +18,17 @@ if (siteConfig.social?.email) {
 
 <header
   id="header"
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-  style={`--nav-accent: ${siteConfig.accentColor}`}
+  class="site-header fixed top-0 left-0 right-0 z-50"
 >
-  <nav class="max-w-7xl mx-auto px-6 sm:px-8 py-4">
+  <nav class="layout-container nav-container nav-layout">
+    <a href="#hero" class="desktop-brand hidden md:flex">
+      {siteConfig.name}
+    </a>
     <!-- شريط الجوال: الاسم + زر القائمة -->
-    <div class="md:hidden flex items-center justify-between">
+    <div class="md:hidden flex w-full items-center justify-between">
       <a
         href="#hero"
-        class="font-bold text-gray-800 truncate pr-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--nav-accent)]"
+        class="font-bold text-ink truncate pr-4"
         aria-label="Back to top"
       >
         {siteConfig.name}
@@ -37,7 +39,7 @@ if (siteConfig.social?.email) {
         aria-controls="mobile-menu"
         aria-expanded="false"
         aria-label="Open navigation menu"
-        class="flex items-center justify-center w-11 h-11 -mr-2 text-gray-700 hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--nav-accent)]"
+        class="nav-toggle -mr-2 text-body hover:text-ink transition-colors duration-fast"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -58,13 +60,13 @@ if (siteConfig.social?.email) {
     </div>
 
     <!-- روابط سطح المكتب -->
-    <ul class="hidden md:flex items-center gap-8 justify-center">
+    <ul class="hidden md:flex items-center gap-8 justify-center md:ml-auto">
       {
         navItems.map((item) => (
           <li>
             <a
               href={item.href}
-              class="text-gray-700 hover:text-black transition-colors font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--nav-accent)]"
+              class="nav-link font-medium"
             >
               {item.label}
             </a>
@@ -76,15 +78,15 @@ if (siteConfig.social?.email) {
 
   <div
     id="mobile-menu"
-    class="md:hidden hidden bg-white border-b border-gray-200"
+    class="md:hidden hidden bg-page border-b border-line"
   >
-    <ul class="px-6 sm:px-8 py-2">
+    <ul class="layout-container py-2">
       {
         navItems.map((item) => (
-          <li class="border-b border-gray-100 last:border-b-0">
+          <li class="border-b border-line last:border-b-0">
             <a
               href={item.href}
-              class="flex items-center min-h-[44px] py-3 text-gray-700 hover:text-black transition-colors font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--nav-accent)]"
+              class="nav-link py-3 font-medium"
             >
               {item.label}
             </a>
@@ -143,21 +145,15 @@ if (siteConfig.social?.email) {
 
   window.addEventListener("scroll", () => {
     if (window.scrollY > 100) {
-      header?.classList.add("bg-white/80", "backdrop-blur-sm");
+      header?.classList.add("is-scrolled");
     } else {
-      header?.classList.remove("bg-white/80", "backdrop-blur-sm");
+      header?.classList.remove("is-scrolled");
     }
   });
 </script>
 
 <style>
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* الهيدر fixed وارتفاعه 76px تحت md، فنمنح التمرير الداخلي هامشاً يبدأ بعده
-     وإلا اختفى عنوان القسم (kicker) خلف الشريط. على سطح المكتب لا يوجد تداخل. */
-  @media (max-width: 767px) {
+  @media (max-width: 47.999rem) {
     html {
       scroll-padding-top: 5rem;
     }

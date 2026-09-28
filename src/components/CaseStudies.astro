@@ -10,21 +10,20 @@ const hasCaseStudies = siteConfig.caseStudies && siteConfig.caseStudies.length >
     <section
       id="work"
       aria-labelledby="work-heading"
-      class="p-8 sm:p-12 md:p-16 lg:p-24"
-      style={`--work-accent: ${siteConfig.accentColor}`}
+      class="section-shell work-shell"
     >
-      <div>
+      <div class="layout-container">
         {/* تسمية تمهيدية بنفس نظام Services ليبقى تسلسل القراءة متسقاً عبر الأقسام */}
-        <p class="text-xs sm:text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-[var(--work-accent)]">
+        <p class="section-eyebrow">
           Case studies
         </p>
 
         {/* h2 يأخذ العرض الكامل: يمنع التفافه إلى سطرين ويمنح دراسة الحالة مساحة كافية */}
-        <h2 id="work-heading" class="mt-6 sm:mt-8 text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900 tracking-[-0.02em]">
+        <h2 id="work-heading" class="section-title section-heading-standalone">
           Selected Work
         </h2>
 
-        <div class="mt-12 sm:mt-16 space-y-20 sm:space-y-24 lg:space-y-32">
+        <div class="case-study-list">
           {siteConfig.caseStudies.map((study, index) => (
             <CaseStudy study={study} index={index} />
           ))}

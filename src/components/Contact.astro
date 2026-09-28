@@ -9,22 +9,21 @@ const email = siteConfig.social?.email;
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      class="p-8 sm:p-12 md:p-16 lg:p-24"
-      style={`--contact-accent: ${siteConfig.accentColor}`}
+      class="section-shell contact-shell"
     >
-      <div>
+      <div class="layout-container">
         {/* الجملة التمهيدية تنقسم إلى تسمية تمهيدية وسطر دعم بدل تكرار كلمة
             "Contact" مرتين. الاثنان من النص الموجود أصلاً في config — لا نسخ مخترع. */}
-        <p class="text-xs sm:text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-[var(--contact-accent)]">
+        <p class="section-eyebrow">
           Get in touch
         </p>
 
-        <div class="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-          <h2 id="contact-heading" class="lg:col-span-4 text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900 tracking-[-0.02em]">
+        <div class="section-intro">
+          <h2 id="contact-heading" class="section-title">
             Contact
           </h2>
 
-          <p class="lg:col-span-8 text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600 max-w-[58ch]">
+          <p class="lead-copy">
             Have a project, system, or dashboard you need built or improved?
           </p>
         </div>
@@ -38,17 +37,17 @@ const email = siteConfig.social?.email;
             py-2 مع -my-2: يرفع منطقة النقر إلى 44px كما في روابط social
             أدناه، والهامش السالب يعيد المحاذاة الأصلية فلا يتزحزح شيء
             بصرياً. الحشو على inline-block لا يكسر الالتفاف. */}
-        <div class="mt-12 sm:mt-16 lg:mt-20 border-t border-gray-200 pt-8 sm:pt-10 lg:pt-12">
+        <div class="contact-primary">
           <a
             href={`mailto:${email}`}
-            class="group inline-block max-w-full break-all py-2 -my-2 text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold tracking-[-0.01em] text-gray-900 underline decoration-gray-300 underline-offset-[6px] transition-colors duration-300 motion-safe:hover:text-[var(--contact-accent)] motion-safe:hover:decoration-[var(--contact-accent)] motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--contact-accent)]"
+            class="group contact-email"
           >
             {email}
             {/* السهم inline-block لا سبيان: التحول لا يعمل على inline غير
                 مُستبدل، ولولا ذلك لبقي السهم ثابتاً بلا حركة */}
             <span
               aria-hidden="true"
-              class="inline-block transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1 motion-reduce:transition-none"
+              class="inline-block transition-transform duration-standard ease-standard motion-safe:group-hover:translate-x-1"
             >
               →
             </span>
@@ -56,19 +55,19 @@ const email = siteConfig.social?.email;
         </div>
 
         {/* ---------- روابط ثانوية: نص عادي بلا أيقونات، سهم ↗ لهدف خارجي ---------- */}
-        <ul class="mt-12 sm:mt-16 border-t border-gray-200 pt-8 sm:pt-10 flex flex-wrap items-center gap-x-8 gap-y-2">
+        <ul class="contact-links">
           {siteConfig.social?.github && (
             <li>
               <a
                 href={siteConfig.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group inline-flex items-center gap-1.5 min-h-[44px] text-base sm:text-lg text-gray-600 transition-colors duration-300 motion-safe:hover:text-[var(--contact-accent)] motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--contact-accent)]"
+                class="group action-link gap-1.5 text-base sm:text-lg text-body"
               >
                 GitHub
                 <span
                   aria-hidden="true"
-                  class="inline-block transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1 motion-reduce:transition-none"
+                  class="inline-block transition-transform duration-standard ease-standard motion-safe:group-hover:translate-x-1"
                 >
                   ↗
                 </span>
@@ -81,12 +80,12 @@ const email = siteConfig.social?.email;
                 href={siteConfig.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group inline-flex items-center gap-1.5 min-h-[44px] text-base sm:text-lg text-gray-600 transition-colors duration-300 motion-safe:hover:text-[var(--contact-accent)] motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--contact-accent)]"
+                class="group action-link gap-1.5 text-base sm:text-lg text-body"
               >
                 LinkedIn
                 <span
                   aria-hidden="true"
-                  class="inline-block transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1 motion-reduce:transition-none"
+                  class="inline-block transition-transform duration-standard ease-standard motion-safe:group-hover:translate-x-1"
                 >
                   ↗
                 </span>
